@@ -1,0 +1,35 @@
+import pandas as pd
+
+# Create a simple CSV file with some issues
+data = {
+    "id": [1, 2, 3, 4, 4, 5],
+    "name": ["Aarav", "Bhavya", "Chitra", "Deepak", "Deepak", None],
+    "marks": [78, 65, None, 90, 90, 55]
+}
+df = pd.DataFrame(data)
+df.to_csv("students_raw.csv", index=False)
+
+# Read the CSV file
+df = pd.read_csv("students_raw.csv")
+print("Original Data:")
+print(df)
+
+# Remove duplicate rows
+df = df.drop_duplicates()
+
+# Fill missing values
+df["name"] = df["name"].fillna("Unknown")
+df["marks"] = df["marks"].fillna(df["marks"].mean())
+
+# Rename columns
+df = df.rename(columns={"id": "StudentID", "name": "Name", "marks": "Marks"})
+
+# Change data type
+df["Marks"] = df["Marks"].astype(int)
+
+print("\nCleaned Data:")
+print(df)
+
+# Save cleaned dataset
+df.to_csv("students_cleaned.csv", index=False)
+print("\nSaved as students_cleaned.csv")
